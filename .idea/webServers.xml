@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="9170b519-8cc3-4678-beb7-356a322e68eb" name="address-book-exercise">
+        <fileTransfer rootFolder="/home/emanolito/address-book-exercise" accessType="SFTP" host="eric.ddfullstack.cloud" port="22" sshConfigId="71eac006-4588-4eb0-816f-2009e9cc1a66" sshConfig="emanolito@eric.ddfullstack.cloud:22 agent" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
