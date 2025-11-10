@@ -2,6 +2,7 @@ import {Form, Link, NavLink, Outlet, useNavigation, useSubmit} from "react-route
 import {getContacts} from "../data";
 import type { Route } from "../layout/+types/sidebar";
 import {request} from "node:http";
+import {useEffect} from "react";
 
 
 export async function loader() {
@@ -19,6 +20,14 @@ export const Component = function SidebarLayout({
     const navigation = useNavigation();
     const submit = useSubmit();
     const searching = navigation.location && new URLSearchParams(navigation.location.search).has("q",);
+
+    useEffect(() => {
+        const searchField = document.getElementById("q");
+        if (searchField instanceof HTMLInputElement) {
+            searchField.value = q || "";
+        }
+    }, [q]);
+
     return (
         <>
             <div id="sidebar">
@@ -27,9 +36,14 @@ export const Component = function SidebarLayout({
                 </h1>
                 <div>
                     <Form id="search-form"
-                          onChange={(event) =>
-                    submit(event.currentTarget)}
-                          role="search">
+                          role="search"
+                          onChange={(event) => {
+                            const isFirstSearch = q === null;
+                    submit(event.currentTarget, {
+                        replace: !isFirstSearch,
+                    });
+                          }}
+                          >
                         <input
                             aria-label="Search contacts"
                             className={searching ? "loading" : ""}
@@ -78,7 +92,7 @@ export const Component = function SidebarLayout({
                     )}
                 </nav>
             </div>
-            <div className={navigation.state === "loading" ? "loading" : ""} id="detail">
+            <div className={navigation.state === "loading" && !searching ? "loading" : ""} id="detail">
                 <Outlet />
             </div>
         </>
