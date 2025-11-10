@@ -1,18 +1,24 @@
-import {Form, Link, Outlet} from "react-router";
+import {Form, Link, NavLink, Outlet, useNavigation, useSubmit} from "react-router";
 import {getContacts} from "../data";
 import type { Route } from "../layout/+types/sidebar";
+import {request} from "node:http";
 
 
-export async function clientLoader() {
-    const contacts = await getContacts();
-    return { contacts };
+export async function loader() {
+    const url = new URL(request.url);
+    const q = url.searchParams.get("q");
+    const contacts = await getContacts(q);
+
+    return { contacts, q };
 }
 
 export const Component = function SidebarLayout({
                                           loaderData,
                                       }: Route.ComponentProps) {
-    const { contacts } = loaderData;
-
+    const { contacts, q } = loaderData;
+    const navigation = useNavigation();
+    const submit = useSubmit();
+    const searching = navigation.location && new URLSearchParams(navigation.location.search).has("q",);
     return (
         <>
             <div id="sidebar">
@@ -20,9 +26,14 @@ export const Component = function SidebarLayout({
                     <Link to="about">React Router Contacts</Link>
                 </h1>
                 <div>
-                    <Form id="search-form" role="search">
+                    <Form id="search-form"
+                          onChange={(event) =>
+                    submit(event.currentTarget)}
+                          role="search">
                         <input
                             aria-label="Search contacts"
+                            className={searching ? "loading" : ""}
+                            defaultValue={q || ""}
                             id="q"
                             name="q"
                             placeholder="Search"
@@ -30,7 +41,7 @@ export const Component = function SidebarLayout({
                         />
                         <div
                             aria-hidden
-                            hidden={true}
+                            hidden={!searching}
                             id="search-spinner"
                         />
                     </Form>
@@ -43,7 +54,9 @@ export const Component = function SidebarLayout({
                         <ul>
                             {contacts.map((contact) => (
                                 <li key={contact.id}>
-                                    <Link to={`contacts/${contact.id}`}>
+                                    <NavLink className={({isActive, isPending}) =>
+                                    isActive ? "active" : isPending ? "pending" : ""}
+                                             to={`contacts/${contact.id}`}>
                                         {contact.first || contact.last ? (
                                             <>
                                                 {contact.first} {contact.last}
@@ -54,7 +67,7 @@ export const Component = function SidebarLayout({
                                         {contact.favorite ? (
                                             <span>★</span>
                                         ) : null}
-                                    </Link>
+                                    </NavLink>
                                 </li>
                             ))}
                         </ul>
@@ -65,7 +78,7 @@ export const Component = function SidebarLayout({
                     )}
                 </nav>
             </div>
-            <div id="detail">
+            <div className={navigation.state === "loading" ? "loading" : ""} id="detail">
                 <Outlet />
             </div>
         </>

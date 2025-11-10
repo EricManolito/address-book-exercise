@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="address-book-exercise" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" serverName="address-book-exercise" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;*.hprof;*.pyc, node_modules" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
       <paths name="address-book-exercise">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/address-book-exercise" local="$PROJECT_DIR$" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="node_modules" />
+          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>
