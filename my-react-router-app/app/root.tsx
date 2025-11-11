@@ -4,6 +4,7 @@ import {
     ScrollRestoration,
     isRouteErrorResponse, Outlet, Link, redirect
 } from "react-router";
+
 import type { Route } from "./+types/root";
 
 import appStylesHref from "./app.css?url";

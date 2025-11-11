@@ -12,22 +12,25 @@ export async function loader({params} : Route.LoaderArgs) {
     return {contact};
 }
 
-export async function action({params, request} : Route.ActionArgs)
+export async function action({
+                                 params,
+                                 request,
+                             }: Route.ActionArgs) {
     const formData = await request.formData();
-    return upateContact(params, contactId, {
+    return updateContact(params.contactId, {
         favorite: formData.get("favorite") === "true",
     });
-
+}
 export default function Contact({loaderData,}:Route.ComponentProps)  {
-    const {contact } = loaderData;
-    const contact = {
-        first: "Your",
-        last: "Name",
-        avatar: "https://placecats.com/200/200",
-        twitter: "your_handle",
-        notes: "Some notes",
-        favorite: true,
-    };
+    const { contact } = loaderData;
+    // const contact = {
+    //     first: "Your",
+    //     last: "Name",
+    //     avatar: "https://placecats.com/200/200",
+    //     twitter: "your_handle",
+    //     notes: "Some notes",
+    //     favorite: true,
+    // };
 
     return (
         <div id="contact">

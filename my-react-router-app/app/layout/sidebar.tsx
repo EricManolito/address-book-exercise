@@ -5,15 +5,16 @@ import {request} from "node:http";
 import {useEffect} from "react";
 
 
-export async function loader() {
+export async function loader({
+                                 request,
+                             }: Route.LoaderArgs) {
     const url = new URL(request.url);
     const q = url.searchParams.get("q");
     const contacts = await getContacts(q);
-
     return { contacts, q };
 }
 
-export const Component = function SidebarLayout({
+export default function SidebarLayout({
                                           loaderData,
                                       }: Route.ComponentProps) {
     const { contacts, q } = loaderData;

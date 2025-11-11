@@ -12,7 +12,7 @@ export async function action({
     const formData = await request.formData();
     const updates = Object.fromEntries(formData);
     await updateContact(params.contactId, updates);
-    return redirect(`/contacts/${contact.id}/edit`);
+    return redirect(`/contacts/${params.contactId}`);
 }
 
 
